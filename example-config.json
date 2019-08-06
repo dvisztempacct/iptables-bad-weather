@@ -1,6 +1,7 @@
 {
   "storms": [
     {
+      "name": "mariadb",
       "type": "simplex",
       "iptables": [
         "INPUT --destination-port 20403 --destination 10.101.0.1",
@@ -11,6 +12,7 @@
       "simplex_y": 0
     },
     {
+      "name": "memcached",
       "type": "simplex",
       "iptables": [
         "INPUT --destination-port 20408 --destination 10.101.0.1",
