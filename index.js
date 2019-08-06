@@ -42,7 +42,7 @@ const getConfig = filename => {
 
 const config = getConfig(program.config)
 
-const outputStream = program.output ? fs.createWriteStream(output) : process.stdout
+const outputStream = program.output ? fs.createWriteStream(program.output) : process.stdout
 
 const verbose = program.verbose ?
   function() { console.error.apply(console, arguments) } :
@@ -153,6 +153,12 @@ const wakeUp = () => {
             /* Add new iptables rule */
             commands.push(
               `${sudo} iptables -p tcp -A ${iptables} -m statistic --mode random --probability ${rate} -j DROP`
+            )
+            /* Write to ndjson log */
+            outputStream.write(
+              JSON.stringify({
+                name: storm.name, rate
+              }) + '\n'
             )
           }
         )
