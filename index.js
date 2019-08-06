@@ -157,7 +157,10 @@ const wakeUp = () => {
             /* Write to ndjson log */
             outputStream.write(
               JSON.stringify({
-                name: storm.name, rate
+                name: storm.name,
+                rate,
+                rateDelta: state.rate - rate,
+                '@timestamp': t,
               }) + '\n'
             )
           }
