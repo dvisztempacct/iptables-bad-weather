@@ -12,6 +12,7 @@
   "dependencies": {
     "bluebird": "^3.5.5",
     "commander": "^2.20.0",
+    "moment": "^2.24.0",
     "ramda": "^0.26.1",
     "simplex-noise": "^2.4.0"
   }
