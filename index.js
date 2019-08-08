@@ -4,6 +4,7 @@ const simplex = new (require('simplex-noise'))
 const fs = require('fs')
 const child_process = require('child_process')
 const util = require('util')
+const moment = require('moment')
 const program = require('commander')
 
 program
@@ -45,11 +46,11 @@ const config = getConfig(program.config)
 const outputStream = program.output ? fs.createWriteStream(program.output) : process.stdout
 
 const verbose = program.verbose ?
-  function() { console.error.apply(console, arguments) } :
+  console.error.bind(console) :
   Function.prototype
 
 const debug = program.debug ?
-  function() { console.error.apply(console, arguments) } :
+  console.error.bind(console) :
   Function.prototype
 
 const wakeupIntervalTime = program.interval
@@ -130,6 +131,7 @@ const wakeUp = () => {
   wakingUp = true
 
   const t = Date.now()
+  const ts = moment(t).format()
 
   const commands = []
 
@@ -157,10 +159,11 @@ const wakeUp = () => {
             /* Write to ndjson log */
             outputStream.write(
               JSON.stringify({
+                category: 'iptables-bad-weather',
                 name: storm.name,
                 rate,
-                rateDelta: state.rate - rate,
-                '@timestamp': t,
+                rateDelta: (state.rate === undefined ? 1 : state.rate) - rate,
+                '@timestamp': ts,
               }) + '\n'
             )
           }
